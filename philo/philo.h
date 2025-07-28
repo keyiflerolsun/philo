@@ -46,11 +46,12 @@ typedef struct s_vars
 }					t_vars;
 
 int					ft_atoi(const char *nptr);
-long				get_time_ms(void);
+long				get_time_ms(pthread_mutex_t *death_mutex);
 void				log_status(t_philo *philo, char *msg);
 int					init_prog(t_vars *vars, char **argv);
 void				run_threads(t_vars *vars);
 void				*routine(void *arg);
 void				*check_alive(void *args);
+int					is_dead(t_philo *philo);
 
 #endif

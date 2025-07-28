@@ -33,20 +33,37 @@ int	ft_atoi(const char *nptr)
 	return (toi * sig);
 }
 
-long	get_time_ms(void)
+long	get_time_ms(pthread_mutex_t *death_mutex)
 {
 	struct timeval	tv;
+	long			timestamp;
 
+	pthread_mutex_lock(death_mutex);
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
+	pthread_mutex_unlock(death_mutex);
+	timestamp = (tv.tv_sec * 1000L) + (tv.tv_usec / 1000);
+	return (timestamp);
+}
+
+int	is_dead(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->vars->death_mutex);
+	if (!philo->vars->all_is_well)
+	{
+		pthread_mutex_unlock(&philo->vars->death_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->vars->death_mutex);
+	return (0);
 }
 
 void	log_status(t_philo *philo, char *msg)
 {
 	long	timestamp;
 
+	timestamp = get_time_ms(&philo->vars->death_mutex) - philo->start_time;
 	pthread_mutex_lock(&philo->vars->print_mutex);
-	timestamp = get_time_ms() - philo->start_time;
-	printf("%ld %d %s\n", timestamp, philo->id, msg);
+	if (!msg[4] || !is_dead(philo))
+		printf("%ld %d %s\n", timestamp, philo->id, msg);
 	pthread_mutex_unlock(&philo->vars->print_mutex);
 }

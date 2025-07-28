@@ -38,7 +38,7 @@ int	init_prog(t_vars *vars, char **argv)
 
 	if (!init_mutex(vars))
 		return (0);
-	start_time = get_time_ms();
+	start_time = get_time_ms(&vars->death_mutex);
 	i = -1;
 	while (++i < vars->count)
 	{

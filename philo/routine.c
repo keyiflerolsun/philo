@@ -16,6 +16,7 @@ void	*check_alive(void *args)
 {
 	t_vars	*vars;
 	t_philo	*philo;
+	long	timestamp;
 	int		i;
 
 	vars = args;
@@ -25,31 +26,17 @@ void	*check_alive(void *args)
 		while (i < vars->count)
 		{
 			philo = &vars->philos[i];
-			pthread_mutex_lock(&vars->death_mutex);
-			if (get_time_ms() - philo->last_meal > philo->tt_die)
+			timestamp = get_time_ms(&vars->death_mutex);
+			if (timestamp - philo->last_meal > philo->tt_die)
 			{
 				vars->all_is_well = 0;
-				pthread_mutex_unlock(&vars->death_mutex);
 				log_status(&vars->philos[i], "died");
 				return (NULL);
 			}
-			pthread_mutex_unlock(&vars->death_mutex);
 			i++;
 		}
 		usleep(500);
 	}
-}
-
-static int	is_dead(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->vars->death_mutex);
-	if (!philo->vars->all_is_well)
-	{
-		pthread_mutex_unlock(&philo->vars->death_mutex);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->vars->death_mutex);
-	return (0);
 }
 
 static void	take_forks(t_philo *philo)
@@ -82,9 +69,7 @@ static void	eat_routine(t_philo *philo)
 	}
 	take_forks(philo);
 	log_status(philo, "is eating");
-	pthread_mutex_lock(&philo->vars->death_mutex);
-	philo->last_meal = get_time_ms();
-	pthread_mutex_unlock(&philo->vars->death_mutex);
+	philo->last_meal = get_time_ms(&philo->vars->death_mutex);
 	usleep(philo->tt_eat * 1000);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
