@@ -20,7 +20,7 @@ void	*check_alive(void *args)
 	int		i;
 
 	vars = args;
-	while (1)
+	while (vars->all_is_well)
 	{
 		i = 0;
 		while (i < vars->count)
@@ -37,6 +37,7 @@ void	*check_alive(void *args)
 		}
 		usleep(500);
 	}
+	return (NULL);
 }
 
 static void	take_forks(t_philo *philo)
