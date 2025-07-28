@@ -39,13 +39,15 @@ typedef struct s_vars
 	t_philo			*philos;
 	int				count;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	death_mutex;
 	pthread_t		alive;
 	int				all_is_well;
 }					t_vars;
 
 int					ft_atoi(const char *nptr);
 long				get_time_ms(void);
-int					log_status(t_philo *philo, char *msg);
+void				log_status(t_philo *philo, char *msg);
 int					init_prog(t_vars *vars, char **argv);
 void				run_threads(t_vars *vars);
 void				*routine(void *arg);

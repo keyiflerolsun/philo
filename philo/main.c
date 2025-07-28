@@ -12,6 +12,19 @@
 
 #include "philo.h"
 
+static void	clean(t_vars *vars)
+{
+	int	i;
+
+	i = -1;
+	while (++i < vars->count)
+		pthread_mutex_destroy(&vars->forks[i]);
+	pthread_mutex_destroy(&vars->print_mutex);
+	pthread_mutex_destroy(&vars->death_mutex);
+	free(vars->philos);
+	free(vars->forks);
+}
+
 int	main(int argc, char **argv)
 {
 	t_vars	vars;
@@ -27,7 +40,6 @@ int	main(int argc, char **argv)
 	if (!init_prog(&vars, argv))
 		return (1);
 	run_threads(&vars);
-	free(vars.philos);
-	free(vars.forks);
+	clean(&vars);
 	return (0);
 }

@@ -25,37 +25,66 @@ void	*check_alive(void *args)
 		while (i < vars->count)
 		{
 			philo = &vars->philos[i];
+			pthread_mutex_lock(&vars->death_mutex);
 			if (get_time_ms() - philo->last_meal > philo->tt_die)
 			{
-				log_status(philo, "died");
 				vars->all_is_well = 0;
+				pthread_mutex_unlock(&vars->death_mutex);
+				log_status(&vars->philos[i], "died");
 				return (NULL);
 			}
+			pthread_mutex_unlock(&vars->death_mutex);
 			i++;
 		}
-		usleep(100);
+		usleep(500);
 	}
-	return (NULL);
 }
 
-static void	eat_routine(t_philo *philo)
+static int	is_dead(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
+	pthread_mutex_lock(&philo->vars->death_mutex);
+	if (!philo->vars->all_is_well)
 	{
-		pthread_mutex_lock(philo->right_fork);
-		log_status(philo, "has taken a fork");
+		pthread_mutex_unlock(&philo->vars->death_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->vars->death_mutex);
+	return (0);
+}
+
+static void	take_forks(t_philo *philo)
+{
+	if (philo->left_fork < philo->right_fork)
+	{
 		pthread_mutex_lock(philo->left_fork);
+		log_status(philo, "has taken a fork");
+		pthread_mutex_lock(philo->right_fork);
 		log_status(philo, "has taken a fork");
 	}
 	else
 	{
-		pthread_mutex_lock(philo->left_fork);
-		log_status(philo, "has taken a fork");
 		pthread_mutex_lock(philo->right_fork);
 		log_status(philo, "has taken a fork");
+		pthread_mutex_lock(philo->left_fork);
+		log_status(philo, "has taken a fork");
 	}
-	philo->last_meal = get_time_ms();
+}
+
+static void	eat_routine(t_philo *philo)
+{
+	if (philo->vars->count == 1)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		log_status(philo, "has taken a fork");
+		usleep(philo->tt_die * 1000);
+		pthread_mutex_unlock(philo->left_fork);
+		return ;
+	}
+	take_forks(philo);
 	log_status(philo, "is eating");
+	pthread_mutex_lock(&philo->vars->death_mutex);
+	philo->last_meal = get_time_ms();
+	pthread_mutex_unlock(&philo->vars->death_mutex);
 	usleep(philo->tt_eat * 1000);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
@@ -66,15 +95,19 @@ void	*routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (philo->vars->all_is_well)
+	if (philo->id % 2 == 0)
+		usleep(philo->id * 500);
+	while (!is_dead(philo))
 	{
-		if (philo->vars->count > 1)
-			eat_routine(philo);
-		if (!log_status(philo, "is sleeping"))
+		eat_routine(philo);
+		if (is_dead(philo))
 			break ;
+		log_status(philo, "is sleeping");
 		usleep(philo->tt_sleep * 1000);
-		if (!log_status(philo, "is thinking"))
+		if (is_dead(philo))
 			break ;
+		log_status(philo, "is thinking");
+		usleep(500);
 	}
 	return (NULL);
 }

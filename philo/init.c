@@ -23,6 +23,8 @@ static int	init_mutex(t_vars *vars)
 	if (!vars->forks)
 		return (0);
 	vars->all_is_well = 1;
+	pthread_mutex_init(&vars->print_mutex, NULL);
+	pthread_mutex_init(&vars->death_mutex, NULL);
 	i = -1;
 	while (++i < vars->count)
 		pthread_mutex_init(&vars->forks[i], NULL);

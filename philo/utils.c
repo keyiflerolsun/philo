@@ -41,13 +41,12 @@ long	get_time_ms(void)
 	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
 }
 
-int	log_status(t_philo *philo, char *msg)
+void	log_status(t_philo *philo, char *msg)
 {
 	long	timestamp;
 
-	if (!philo->vars->all_is_well)
-		return (0);
+	pthread_mutex_lock(&philo->vars->print_mutex);
 	timestamp = get_time_ms() - philo->start_time;
 	printf("%ld %d %s\n", timestamp, philo->id, msg);
-	return (1);
+	pthread_mutex_unlock(&philo->vars->print_mutex);
 }
