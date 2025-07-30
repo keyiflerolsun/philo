@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 08:48:29 by osancak           #+#    #+#             */
-/*   Updated: 2025/07/28 13:05:34 by osancak          ###   ########.fr       */
+/*   Updated: 2025/07/29 13:01:30 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,34 @@ static void	clean(t_vars *vars)
 	free(vars->forks);
 }
 
+static int	check_args(int argc, char **argv)
+{
+	int	res;
+
+	while (--argc > 0)
+	{
+		if (!ft_atoi(argv[argc], &res) || res <= 0)
+			return (0);
+	}
+	return (1);
+}
+
 int	main(int argc, char **argv)
 {
 	t_vars	vars;
 
-	if (argc != 5)
+	if ((argc != 5 && argc != 6) || !check_args(argc, argv))
 	{
 		printf("./philo count tt_die tt_eat tt_sleep\n");
 		return (1);
 	}
-	vars.count = ft_atoi(argv[1]);
-	if (vars.count <= 0)
+	ft_atoi(argv[1], &vars.count);
+	if (vars.count >= 200)
 		return (1);
+	if (argc == 6)
+		vars.op_arg = 1;
+	else
+		vars.op_arg = 0;
 	if (!init_prog(&vars, argv))
 		return (1);
 	run_threads(&vars);

@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 10:57:29 by osancak           #+#    #+#             */
-/*   Updated: 2025/07/28 15:14:41 by osancak          ###   ########.fr       */
+/*   Updated: 2025/07/29 12:31:42 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,16 @@ int	init_prog(t_vars *vars, char **argv)
 		vars->philos[i].id = i + 1;
 		vars->philos[i].start_time = start_time;
 		vars->philos[i].last_meal = start_time;
-		vars->philos[i].tt_die = ft_atoi(argv[2]);
-		vars->philos[i].tt_eat = ft_atoi(argv[3]);
-		vars->philos[i].tt_sleep = ft_atoi(argv[4]);
+		ft_atoi(argv[2], &vars->philos[i].tt_die);
+		ft_atoi(argv[3], &vars->philos[i].tt_eat);
+		ft_atoi(argv[4], &vars->philos[i].tt_sleep);
 		vars->philos[i].left_fork = &vars->forks[i];
 		vars->philos[i].right_fork = &vars->forks[(i + 1) % vars->count];
 		vars->philos[i].vars = vars;
+		if (vars->op_arg)
+			ft_atoi(argv[5], &vars->philos[i].must_eat);
+		else
+			vars->philos[i].must_eat = 0;
 	}
 	return (1);
 }

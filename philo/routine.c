@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 11:01:26 by osancak           #+#    #+#             */
-/*   Updated: 2025/07/28 17:52:09 by osancak          ###   ########.fr       */
+/*   Updated: 2025/07/29 12:47:58 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,19 @@ static void	eat_routine(t_philo *philo)
 	pthread_mutex_unlock(philo->right_fork);
 }
 
+static int	op_arg(t_philo *philo)
+{
+	if (philo->vars->op_arg)
+	{
+		pthread_mutex_lock(&philo->vars->death_mutex);
+		philo->must_eat--;
+		pthread_mutex_unlock(&philo->vars->death_mutex);
+		if (!philo->must_eat)
+			return (1);
+	}
+	return (0);
+}
+
 void	*routine(void *arg)
 {
 	t_philo	*philo;
@@ -86,7 +99,7 @@ void	*routine(void *arg)
 	while (!is_dead(philo))
 	{
 		eat_routine(philo);
-		if (is_dead(philo))
+		if (is_dead(philo) || op_arg(philo))
 			break ;
 		log_status(philo, "is sleeping");
 		usleep(philo->tt_sleep * 1000);

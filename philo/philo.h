@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 12:03:22 by osancak           #+#    #+#             */
-/*   Updated: 2025/07/28 15:23:53 by osancak          ###   ########.fr       */
+/*   Updated: 2025/07/29 12:26:51 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	struct s_vars	*vars;
+	int				must_eat;
 }					t_philo;
 
 typedef struct s_vars
@@ -43,9 +44,10 @@ typedef struct s_vars
 	pthread_mutex_t	death_mutex;
 	pthread_t		alive;
 	int				all_is_well;
+	int				op_arg;
 }					t_vars;
 
-int					ft_atoi(const char *nptr);
+int					ft_atoi(const char *nptr, int *res);
 long				get_time_ms(pthread_mutex_t *death_mutex);
 void				log_status(t_philo *philo, char *msg);
 int					init_prog(t_vars *vars, char **argv);

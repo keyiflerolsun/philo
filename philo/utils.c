@@ -6,32 +6,11 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 09:11:18 by osancak           #+#    #+#             */
-/*   Updated: 2025/07/28 15:22:57 by osancak          ###   ########.fr       */
+/*   Updated: 2025/07/29 12:28:40 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	ft_atoi(const char *nptr)
-{
-	long int	toi;
-	int			sig;
-
-	sig = 1;
-	toi = 0;
-	while (*nptr && ((*nptr >= '\t' && *nptr <= '\r') || *nptr == ' '))
-		nptr++;
-	if (*nptr == '-' || *nptr == '+')
-		if (*nptr++ == '-')
-			sig *= -1;
-	while (*nptr && *nptr >= '0' && *nptr <= '9')
-		toi = toi * 10 + (*nptr++ - '0');
-	if (toi * sig > 2147483647)
-		return (-1);
-	if (toi * sig < -2147483648)
-		return (0);
-	return (toi * sig);
-}
 
 long	get_time_ms(pthread_mutex_t *death_mutex)
 {
@@ -63,7 +42,7 @@ void	log_status(t_philo *philo, char *msg)
 
 	timestamp = get_time_ms(&philo->vars->death_mutex) - philo->start_time;
 	pthread_mutex_lock(&philo->vars->print_mutex);
-	if (!msg[4] || !is_dead(philo))
+	if ((!msg[4] && !philo->vars->op_arg) || !is_dead(philo))
 		printf("%ld %d %s\n", timestamp, philo->id, msg);
 	pthread_mutex_unlock(&philo->vars->print_mutex);
 }

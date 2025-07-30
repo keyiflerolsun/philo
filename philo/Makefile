@@ -1,4 +1,5 @@
-CFILES = init.c \
+CFILES = atoi.c \
+		 init.c \
 		 utils.c \
 		 routine.c \
 		 main.c
