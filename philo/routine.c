@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 11:01:26 by osancak           #+#    #+#             */
-/*   Updated: 2025/07/29 12:47:58 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/02 16:09:14 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	*check_alive(void *args)
 		while (i < vars->count)
 		{
 			philo = &vars->philos[i];
-			timestamp = get_time_ms(&vars->death_mutex);
+			timestamp = get_time_ms();
 			if (timestamp - philo->last_meal > philo->tt_die)
 			{
 				vars->all_is_well = 0;
@@ -45,16 +45,20 @@ static void	take_forks(t_philo *philo)
 	if (philo->left_fork < philo->right_fork)
 	{
 		pthread_mutex_lock(philo->left_fork);
-		log_status(philo, "has taken a fork");
+		if (!is_dead(philo))
+			log_status(philo, "has taken a fork");
 		pthread_mutex_lock(philo->right_fork);
-		log_status(philo, "has taken a fork");
+		if (!is_dead(philo))
+			log_status(philo, "has taken a fork");
 	}
 	else
 	{
 		pthread_mutex_lock(philo->right_fork);
-		log_status(philo, "has taken a fork");
+		if (!is_dead(philo))
+			log_status(philo, "has taken a fork");
 		pthread_mutex_lock(philo->left_fork);
-		log_status(philo, "has taken a fork");
+		if (!is_dead(philo))
+			log_status(philo, "has taken a fork");
 	}
 }
 
@@ -69,8 +73,10 @@ static void	eat_routine(t_philo *philo)
 		return ;
 	}
 	take_forks(philo);
+	if (is_dead(philo))
+		return ;
 	log_status(philo, "is eating");
-	philo->last_meal = get_time_ms(&philo->vars->death_mutex);
+	philo->last_meal = get_time_ms();
 	usleep(philo->tt_eat * 1000);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);

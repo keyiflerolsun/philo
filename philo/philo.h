@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 12:03:22 by osancak           #+#    #+#             */
-/*   Updated: 2025/07/29 12:26:51 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/02 15:56:56 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_vars
 }					t_vars;
 
 int					ft_atoi(const char *nptr, int *res);
-long				get_time_ms(pthread_mutex_t *death_mutex);
+long				get_time_ms(void);
 void				log_status(t_philo *philo, char *msg);
 int					init_prog(t_vars *vars, char **argv);
 void				run_threads(t_vars *vars);

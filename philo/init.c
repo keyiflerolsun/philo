@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 10:57:29 by osancak           #+#    #+#             */
-/*   Updated: 2025/07/29 12:31:42 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/02 15:57:08 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	init_prog(t_vars *vars, char **argv)
 
 	if (!init_mutex(vars))
 		return (0);
-	start_time = get_time_ms(&vars->death_mutex);
+	start_time = get_time_ms();
 	i = -1;
 	while (++i < vars->count)
 	{
