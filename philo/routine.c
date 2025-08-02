@@ -16,24 +16,23 @@ void	*check_alive(void *args)
 {
 	t_vars	*vars;
 	t_philo	*philo;
-	long	timestamp;
 	int		i;
 
 	vars = args;
 	while (vars->all_is_well)
 	{
-		i = 0;
-		while (i < vars->count)
+		i = -1;
+		while (++i < vars->count)
 		{
 			philo = &vars->philos[i];
-			timestamp = get_time_ms();
-			if (timestamp - philo->last_meal > philo->tt_die)
+			if (get_time_ms() - philo->last_meal > philo->tt_die)
 			{
+				pthread_mutex_lock(&vars->death_mutex);
 				vars->all_is_well = 0;
+				pthread_mutex_unlock(&vars->death_mutex);
 				log_status(&vars->philos[i], "died");
 				return (NULL);
 			}
-			i++;
 		}
 		usleep(500);
 	}

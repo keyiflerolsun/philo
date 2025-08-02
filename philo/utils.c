@@ -22,14 +22,12 @@ long	get_time_ms(void)
 
 int	is_dead(t_philo *philo)
 {
+	int	res;
+
 	pthread_mutex_lock(&philo->vars->death_mutex);
-	if (!philo->vars->all_is_well)
-	{
-		pthread_mutex_unlock(&philo->vars->death_mutex);
-		return (1);
-	}
+	res = !philo->vars->all_is_well;
 	pthread_mutex_unlock(&philo->vars->death_mutex);
-	return (0);
+	return (res);
 }
 
 void	log_status(t_philo *philo, char *msg)
