@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 08:48:29 by osancak           #+#    #+#             */
-/*   Updated: 2025/07/29 13:01:30 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/03 15:35:09 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	ft_atoi(argv[1], &vars.count);
-	if (vars.count >= 200)
-		return (1);
 	if (argc == 6)
 		vars.op_arg = 1;
 	else
