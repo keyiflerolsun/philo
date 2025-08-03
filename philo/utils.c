@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 09:11:18 by osancak           #+#    #+#             */
-/*   Updated: 2025/08/03 18:31:45 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/03 20:18:28 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@ long	get_time_ms(void)
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
+}
+
+void	ft_sleep(int milliseconds)
+{
+	long	start;
+
+	start = get_time_ms();
+	while ((get_time_ms() - start) < milliseconds)
+		usleep(150);
 }
 
 int	is_dead(t_philo *philo)

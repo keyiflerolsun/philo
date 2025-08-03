@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 11:01:26 by osancak           #+#    #+#             */
-/*   Updated: 2025/08/03 18:33:40 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/03 20:15:42 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	eat_routine(t_philo *philo)
 	{
 		pthread_mutex_lock(philo->left_fork);
 		log_status(philo, "has taken a fork");
-		usleep(philo->tt_die * 1000);
+		ft_sleep(philo->tt_die);
 		pthread_mutex_unlock(philo->left_fork);
 		return (0);
 	}
@@ -87,7 +87,7 @@ static int	eat_routine(t_philo *philo)
 		return (0);
 	log_status(philo, "is eating");
 	philo->last_meal = get_time_ms();
-	usleep(philo->tt_eat * 1000);
+	ft_sleep(philo->tt_eat);
 	unlock_forks(philo);
 	return (op_arg(philo));
 }
@@ -104,11 +104,10 @@ void	*routine(void *arg)
 		if (!eat_routine(philo) || is_dead(philo))
 			break ;
 		log_status(philo, "is sleeping");
-		usleep(philo->tt_sleep * 1000);
+		ft_sleep(philo->tt_sleep);
 		if (is_dead(philo))
 			break ;
 		log_status(philo, "is thinking");
-		usleep(500);
 	}
 	return (NULL);
 }

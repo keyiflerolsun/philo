@@ -10,6 +10,7 @@ OFILES = $(addprefix $(OBJDIR)/, $(CFILES:.c=.o))
 NAME   = philo
 CC     = cc
 CFLAGS = -Wall -Wextra -Werror
+CFLAGS += -fsanitize=thread
 
 GREEN   = \033[0;32m
 YELLOW  = \033[0;33m

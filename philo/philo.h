@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 12:03:22 by osancak           #+#    #+#             */
-/*   Updated: 2025/08/03 18:29:51 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/03 20:14:16 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ long				get_time_ms(void);
 void				log_status(t_philo *philo, char *msg);
 int					init_prog(t_vars *vars, char **argv);
 void				run_threads(t_vars *vars);
+void				ft_sleep(int milliseconds);
 void				*routine(void *arg);
 void				take_fork(t_philo *philo, pthread_mutex_t *fork);
 int					unlock_forks(t_philo *philo);
