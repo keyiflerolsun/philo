@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 10:57:29 by osancak           #+#    #+#             */
-/*   Updated: 2025/08/02 15:57:08 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/04 17:15:30 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,12 @@ void	run_threads(t_vars *vars)
 	while (++i < vars->count)
 		pthread_join(philos[i].thread, NULL);
 	pthread_join(vars->alive, NULL);
+}
+
+long	get_time_ms(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
 }

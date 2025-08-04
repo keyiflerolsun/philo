@@ -6,40 +6,11 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 11:01:26 by osancak           #+#    #+#             */
-/*   Updated: 2025/08/03 20:15:42 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/04 16:52:29 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	*check_alive(void *args)
-{
-	t_vars	*vars;
-	t_philo	*philo;
-	int		i;
-
-	vars = args;
-	while (vars->all_is_well)
-	{
-		i = -1;
-		while (++i < vars->count)
-		{
-			philo = &vars->philos[i];
-			if (philo->vars->op_arg && !philo->must_eat)
-				return (NULL);
-			if (get_time_ms() - philo->last_meal > philo->tt_die)
-			{
-				pthread_mutex_lock(&vars->death_mutex);
-				vars->all_is_well = 0;
-				pthread_mutex_unlock(&vars->death_mutex);
-				log_status(&vars->philos[i], "died");
-				return (NULL);
-			}
-		}
-		usleep(500);
-	}
-	return (NULL);
-}
 
 static int	take_forks(t_philo *philo)
 {
@@ -86,7 +57,9 @@ static int	eat_routine(t_philo *philo)
 	if (!take_forks(philo))
 		return (0);
 	log_status(philo, "is eating");
+	pthread_mutex_lock(&philo->vars->death_mutex);
 	philo->last_meal = get_time_ms();
+	pthread_mutex_unlock(&philo->vars->death_mutex);
 	ft_sleep(philo->tt_eat);
 	unlock_forks(philo);
 	return (op_arg(philo));

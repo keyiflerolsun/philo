@@ -6,19 +6,11 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 09:11:18 by osancak           #+#    #+#             */
-/*   Updated: 2025/08/03 20:18:28 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/04 17:15:18 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-long	get_time_ms(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
-}
 
 void	ft_sleep(int milliseconds)
 {

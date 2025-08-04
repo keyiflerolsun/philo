@@ -2,6 +2,7 @@ CFILES = atoi.c \
 		 init.c \
 		 utils.c \
 		 routine.c \
+		 check_alive.c \
 		 main.c
 
 OBJDIR = obj
@@ -10,7 +11,7 @@ OFILES = $(addprefix $(OBJDIR)/, $(CFILES:.c=.o))
 NAME   = philo
 CC     = cc
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS += -fsanitize=thread
+# CFLAGS += -fsanitize=thread
 
 GREEN   = \033[0;32m
 YELLOW  = \033[0;33m
@@ -28,7 +29,7 @@ $(NAME): $(OFILES) $(SRC)
 
 $(OBJDIR)/%.o: %.c
 	@mkdir -p $(OBJDIR)
-	@printf "$(BLUE)» ⚙️  Compiling $(RESET)» $(YELLOW)%9s$(RESET) | $(GREEN)%s$(RESET)\n" "$<" "$@"
+	@printf "$(BLUE)» ⚙️  Compiling $(RESET)» $(YELLOW)%14s$(RESET) | $(GREEN)%s$(RESET)\n" "$<" "$@"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
@@ -41,4 +42,13 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+leak: re
+	valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes ./philo 4 310 200 100
+
+drd: re
+	valgrind --tool=drd ./philo 4 310 200 100
+
+helgrind: re
+	valgrind --tool=helgrind --history-level=approx ./philo 4 310 200 100
+
+.PHONY: all clean fclean re leak drd helgrind
