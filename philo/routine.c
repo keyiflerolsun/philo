@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 11:01:26 by osancak           #+#    #+#             */
-/*   Updated: 2025/08/04 16:52:29 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/05 15:56:55 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
-		usleep(philo->id * 500);
+		usleep(philo->id * 50);
 	while (!is_dead(philo))
 	{
 		if (!eat_routine(philo) || is_dead(philo))

@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 09:11:18 by osancak           #+#    #+#             */
-/*   Updated: 2025/08/04 17:15:18 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/05 15:56:57 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_sleep(int milliseconds)
 
 	start = get_time_ms();
 	while ((get_time_ms() - start) < milliseconds)
-		usleep(150);
+		usleep(50);
 }
 
 int	is_dead(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 16:29:34 by osancak           #+#    #+#             */
-/*   Updated: 2025/08/04 16:57:32 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:16:44 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	*check_alive(void *args)
 			if (!check_op(philo) || !check_well(vars, philo))
 				return (NULL);
 		}
-		usleep(500);
+		usleep(50);
 	}
 	return (NULL);
 }
