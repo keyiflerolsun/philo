@@ -6,7 +6,7 @@
 /*   By: osancak <osancak@student.42istanbul.com.tr +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 08:48:29 by osancak           #+#    #+#             */
-/*   Updated: 2025/08/03 15:35:09 by osancak          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:31:06 by osancak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int	main(int argc, char **argv)
 
 	if ((argc != 5 && argc != 6) || !check_args(argc, argv))
 	{
-		printf("./philo count tt_die tt_eat tt_sleep\n");
-		return (1);
+		write(STDERR_FILENO, "./philo count tt_die tt_eat tt_sleep\n", 37);
+		return (EXIT_FAILURE);
 	}
 	ft_atoi(argv[1], &vars.count);
 	if (argc == 6)
@@ -52,8 +52,11 @@ int	main(int argc, char **argv)
 	else
 		vars.op_arg = 0;
 	if (!init_prog(&vars, argv))
-		return (1);
+	{
+		write(STDERR_FILENO, "initializing error\n", 19);
+		return (EXIT_FAILURE);
+	}
 	run_threads(&vars);
 	clean(&vars);
-	return (0);
+	return (EXIT_SUCCESS);
 }
